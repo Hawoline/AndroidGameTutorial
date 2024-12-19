@@ -38,9 +38,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     holder.addCallback(this);
     touchEvents = new TouchEvents(this);
     gameLoop = new GameLoop(this);
-    //for (int  i = 0; i < 50; i++) {
-    //  skeletons.add(new PointF(random.nextInt(1080), random.nextInt(540)));
-    //}
     skeletonPosition =  new PointF(random.nextInt(1080), random.nextInt(540));
   }
 
@@ -58,30 +55,22 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
   }
 
   @Override public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
-
   }
 
   public void render() {
     Canvas canvas = holder.lockCanvas();
+    if (canvas == null) {
+      return;
+    }
     canvas.drawColor(Color.BLACK);
-    canvas.drawBitmap(GameCharacters.PLAYER.getSprite(playerAnimationIndexY, playerFaceDirection), x, y, null);
-    //for (int i = 0; i < skeletons.size();i++) {
-    //  canvas.drawBitmap(GameCharacters.SKELETON.getSprite(0,0), skeletons.get(i).x, skeletons.get(i).y, null);
-    //}
     touchEvents.draw(canvas);
-      canvas.drawBitmap(GameCharacters.SKELETON.getSprite(playerAnimationIndexY,skeletonDirection), skeletonPosition.x, skeletonPosition.y, null);
+    canvas.drawBitmap(GameCharacters.PLAYER.getSprite(playerAnimationIndexY, playerFaceDirection), x, y, null);
+    canvas.drawBitmap(GameCharacters.SKELETON.getSprite(playerAnimationIndexY,skeletonDirection), skeletonPosition.x, skeletonPosition.y, null);
 
     holder.unlockCanvasAndPost(canvas);
   }
 
   public void update(double delta) {
-    //for (PointF skeletonPosition: skeletons) {
-    //  skeletonPosition.y += delta * 300;
-    //  if (skeletonPosition.y > 1980) {
-    //    skeletonPosition.y = 0;
-    //  }
-    //}
-
     if (System.currentTimeMillis() - lastSkeletonDirectionChange > 3000) {
       skeletonDirection = random.nextInt(4);
       lastSkeletonDirectionChange = System.currentTimeMillis();
