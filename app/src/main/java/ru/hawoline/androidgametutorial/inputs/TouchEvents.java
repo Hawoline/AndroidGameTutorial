@@ -8,9 +8,9 @@ import android.view.MotionEvent;
 import ru.hawoline.androidgametutorial.GamePanel;
 
 public class TouchEvents {
-  private float xCenter = 540;
-  private float yCenter = 1300;
-  private float radius = 100;
+  private float xCenter = 250;
+  private float yCenter = 800;
+  private float radius = 150;
   private GamePanel gamePanel;
   private Paint circlePaint, yellowPaint;
   private boolean touchDown;

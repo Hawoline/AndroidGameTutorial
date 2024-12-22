@@ -38,7 +38,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     holder.addCallback(this);
     touchEvents = new TouchEvents(this);
     gameLoop = new GameLoop(this);
-    skeletonPosition =  new PointF(random.nextInt(1080), random.nextInt(540));
+    skeletonPosition =  new PointF(random.nextInt(MainActivity.GAME_WIDTH), random.nextInt(MainActivity.GAME_HEIGHT));
   }
 
   @Override public boolean onTouchEvent(MotionEvent event) {
@@ -78,7 +78,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     switch (skeletonDirection) {
       case GameConstants.FaceDirection.DOWN:
         skeletonPosition.y += delta * 300;
-        if (skeletonPosition.y > 1980) {
+        if (skeletonPosition.y > MainActivity.GAME_HEIGHT) {
           skeletonDirection = GameConstants.FaceDirection.UP;
         }
         break;
@@ -90,7 +90,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         break;
       case GameConstants.FaceDirection.RIGHT:
         skeletonPosition.x += delta * 300;
-        if (skeletonPosition.x > 1080) {
+        if (skeletonPosition.x > MainActivity.GAME_WIDTH) {
           skeletonDirection = GameConstants.FaceDirection.LEFT;
         }
         break;

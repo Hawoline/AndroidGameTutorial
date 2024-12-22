@@ -9,7 +9,6 @@ public class GameLoop implements Runnable {
   public GameLoop(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
     thread = new Thread(this);
-    Log.d("BELIK_TAG", "Thread created: " + thread.getName());
   }
   @Override public void run() {
     long lastFpsCheck = System.currentTimeMillis();
@@ -20,7 +19,6 @@ public class GameLoop implements Runnable {
 
     while (true) {
       long nowDelta = System.nanoTime();
-      Log.d("BELIK_TAG", "Thread run: " + thread.getName());
       double timeSinceLastDelta = nowDelta - lastDelta;
       double delta = timeSinceLastDelta / nanoSecond;
       gamePanel.update(delta);
