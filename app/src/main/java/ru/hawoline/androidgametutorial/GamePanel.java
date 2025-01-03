@@ -8,9 +8,10 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import androidx.annotation.NonNull;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import ru.hawoline.androidgametutorial.entities.GameCharacters;
+import ru.hawoline.androidgametutorial.environments.GameMap;
 import ru.hawoline.androidgametutorial.helpers.GameConstants;
 import ru.hawoline.androidgametutorial.inputs.TouchEvents;
 
@@ -19,18 +20,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
   private GameLoop gameLoop;
   private Random random = new Random();
   private float x, y;
-  //private ArrayList<PointF> skeletons = new ArrayList<>();
   private PointF skeletonPosition;
   private int skeletonDirection = GameConstants.FaceDirection.DOWN;
   private long lastSkeletonDirectionChange = System.currentTimeMillis();
 
   private int playerFaceDirection = GameConstants.FaceDirection.RIGHT;
   private int playerAnimationIndexY;
-  private int aniTick;
+  private int animationTick;
   private int aniSpeed = 10;
   private TouchEvents touchEvents;
   private PointF lastTouchDiff;
   private boolean movePlayer;
+
+  private GameMap testMap;
 
   public GamePanel(Context context) {
     super(context);
@@ -39,6 +41,23 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     touchEvents = new TouchEvents(this);
     gameLoop = new GameLoop(this);
     skeletonPosition =  new PointF(random.nextInt(MainActivity.GAME_WIDTH), random.nextInt(MainActivity.GAME_HEIGHT));
+
+    int[][] spriteIds = {
+        {454, 276, 275, 275, 190, 275, 275, 279, 275, 275, 275, 297, 110, 0, 1, 1, 1, 2, 110, 132},
+        {454, 275, 169, 232, 238, 275, 275, 275, 276, 275, 275, 297, 110, 22, 89, 23, 23, 24, 110, 132},
+        {454, 275, 190, 276, 275, 275, 279, 275, 275, 275, 279, 297, 110, 22, 23, 23, 23, 24, 110, 132},
+        {454, 275, 190, 279, 275, 275, 169, 233, 275, 275, 275, 297, 110, 22, 23, 23, 23, 24, 110, 132},
+        {454, 275, 190, 276, 277, 275, 190, 279, 279, 279, 275, 297, 110, 22, 23, 88, 23, 24, 110, 132},
+        {454, 275, 235, 232, 232, 232, 260, 279, 276, 279, 275, 297, 110, 22, 23, 89, 23, 24, 110, 132},
+        {454, 275, 275, 275, 275, 275, 190, 279, 279, 279, 275, 297, 110, 22, 23, 23, 23, 24, 110, 132},
+        {454, 277, 275, 275, 279, 275, 257, 232, 232, 232, 238, 297, 110, 22, 88, 23, 23, 24, 110, 132},
+        {454, 275, 275, 275, 275, 275, 190, 279, 275, 275, 275, 297, 110, 22, 23, 23, 88, 24, 110, 132},
+        {454, 275, 275, 275, 275, 275, 190, 279, 279, 279, 279, 297, 110, 22, 23, 23, 23, 24, 110, 132},
+        {454, 169, 232, 232, 232, 232, 239, 232, 232, 232, 172, 297, 110, 22, 23, 89, 23, 24, 110, 132},
+        {454, 190, 279, 275, 275, 275, 275, 275, 275, 275, 190, 297, 110, 44, 45, 45, 45, 46, 110, 132}
+    };
+
+    testMap = new GameMap(spriteIds);
   }
 
   @Override public boolean onTouchEvent(MotionEvent event) {
@@ -63,6 +82,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
       return;
     }
     canvas.drawColor(Color.BLACK);
+    testMap.draw(canvas);
     touchEvents.draw(canvas);
     canvas.drawBitmap(GameCharacters.PLAYER.getSprite(playerAnimationIndexY, playerFaceDirection), x, y, null);
     canvas.drawBitmap(GameCharacters.SKELETON.getSprite(playerAnimationIndexY,skeletonDirection), skeletonPosition.x, skeletonPosition.y, null);
@@ -148,9 +168,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     if (!movePlayer) {
       return;
     }
-    aniTick++;
-    if (aniTick >= aniSpeed) {
-      aniTick = 0;
+    animationTick++;
+    if (animationTick >= aniSpeed) {
+      animationTick = 0;
       playerAnimationIndexY++;
       if (playerAnimationIndexY > 3) {
         playerAnimationIndexY = 0;
@@ -169,7 +189,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
   }
 
   private void resetAnimation() {
-    aniTick = 0;
+    animationTick = 0;
     playerAnimationIndexY = 0;
   }
 }
